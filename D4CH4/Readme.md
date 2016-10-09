@@ -1,5 +1,5 @@
 D.4.C.H.4
-=========
+==================================================================================================
 
 ### 06.09.2016 - ??.??.2016
 
@@ -85,6 +85,8 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 
 **Lose:** A dog fucks Vasya.
 
+--------------------------------------------------------------------------------------------------
+
 ### Stage 2.
 
 **Level name:** Suburbs.
@@ -96,6 +98,8 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 **Win:** ???
 
 **Lose:** ???
+
+--------------------------------------------------------------------------------------------------
 
 ### Stage 3.
 
@@ -109,6 +113,8 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 
 **Lose:** ???
 
+--------------------------------------------------------------------------------------------------
+
 ### Stage 4.
 
 **Level name]: Mountains.
@@ -121,6 +127,8 @@ and fall penis, so you can't shooting for some time.
 **Win:** Vasya drinks alotta beer.
 
 **Lose:** Vasya suck a Zuliko's dick.
+
+--------------------------------------------------------------------------------------------------
 
 ### Stage 5.
 
