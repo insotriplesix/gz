@@ -37,55 +37,55 @@ all around so that's tha dangerous stuff btw.`
 
 #### Attributes
 
-[HP]: 0 - 100
+**HP:** 0 - 100
 
-[ST]: 0 - 100
+**ST:** 0 - 100
 
-[SP]: 0 - 1000 (more?)
+**SP:** 0 - 1000 (more?)
 
-[Restore options:] HP +1 per sec, ST +1 per sec, SP +5 per sec
+**Restore options:** HP +1 per sec, ST +1 per sec, SP +5 per sec
 
 #### Stuff
 
-[XXX-journal]: +50 SP, -50 ST
+**XXX-journal:** +50 SP, -50 ST
 
-[XXX-movie]: +100 SP, -100 ST
+**XXX-movie:** +100 SP, -100 ST
 
-[XXX-bonus]: +250 SP
+**XXX-bonus:** +250 SP
 
 
-[Beer (jigulyovskoye)]: +50 ST, -50 SP
+**Beer (jigulyovskoye):** +50 ST, -50 SP
 
-[Vodka (petrovich)]: +100 ST, -100 SP
+**Vodka (petrovich):** +100 ST, -100 SP
 
-[Power drink]: +100 ST
+**Power drink:** +100 ST
 
 If Vasya has full ST & SP - then all stuff keeps on his inventory. So just click an 'x' button
-to restore SP and don`t get a negative effect and click a 'p' button if you wanna power!
+to restore SP and don't get a negative effect and click a 'p' button if you wanna power!
 
 #### Modes
 
-[Uzi mode]: 1 * AttackSpeed, 1 * Damage, -1 SP
+**Uzi mode:** 1 * AttackSpeed, 1 * Damage, -1 SP
 
-[Shotgun mode]: 3 / AttackSpeed, 3 * Damage, -3 SP
+**Shotgun mode:** 3 / AttackSpeed, 3 * Damage, -3 SP
 
-[Flow mode]: 10 * AttackSpeed, 10 * Damage, -10 SP
+**Flow mode:** 10 * AttackSpeed, 10 * Damage, -10 SP
 
-[Ulti mode]: 10 * AttackSpeed, 100 * Damage, -100 SP, immune to any attack while ulti.
+**Ulti mode:** 10 * AttackSpeed, 100 * Damage, -100 SP, immune to any attack while ulti.
 
 ==================================================================================================
 
 #### Stage 1.
 
-[Level name]: Vishnevaya St.
+**Level name:** Vishnevaya St.
 
-[Enemies]: cars and dogs. At the end boss Artem.
+**Enemies:** cars and dogs. At the end boss Artem.
 
-[Boss]: VDV strength. Artem breaks the bottle and go fight. Fast and deadly!
+**Boss:** VDV strength. Artem breaks the bottle and go fight. Fast and deadly!
 
-[Win]: Vasya fucks a dog.
+**Win:** Vasya fucks a dog.
 
-[Lose]: A dog fucks Vasya.
+**Lose:** A dog fucks Vasya.
 
 #### Stage 2.
 
