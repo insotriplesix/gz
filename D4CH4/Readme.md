@@ -1,38 +1,47 @@
-==================================================================================================
-=========================================== D.4.C.H.4 ============================================
-==================================================================================================
-06.09.2016 - ??.??.2016
+=========
+D.4.C.H.4
+=========
 
-So, that`s the concept lul ->
+### 06.09.2016 - ??.??.2016
+
+So, that's the concept lul ->
 
 1) main : 2d shooter
-2) place : dacha
-3) stages : five
-4) protagonist : Vasya 
-5) weapon : dick with several modes for shooting
-6) enemies : dogs, Losev`s squad, hachi, ..., traps.
-7) bosses : Artem, Losev, Ilya, Zuliko, Ped0
-8) ???
-9) GOTY!!!1
 
-.. let`s get it!
+2) place : dacha
+
+3) stages : five
+
+4) protagonist : Vasya 
+
+5) weapon : dick with several modes for shooting
+
+6) enemies : dogs, Losev`s squad, hachi, ..., traps.
+
+7) bosses : Artem, Losev, Ilya, Zuliko, Ped0
+
+8) ???
+
+9) GOTY!!!1
 
 ==================================================================================================
 
-A little description.
+### A little description.
 
-Vasya must find the major evil in the village (dacha) - Pedo. It`s a man who captured'n'fucks
+`Vasya must find the major evil in the village (dacha) - Pedo. It's a man who captured'n'fucks
 everyday two under-age girls. Vasya must protect himself from other dangerous things that he
 faced on a way. He has a huge cock that can destroy enemies by sperm. Sperm accumulates when
 Vasya picks up xxx-stuff. Also Vasya has an ultimate power. And when he use it - he pulls sperm
-all around so that`s tha dangerous stuff btw.
+all around so that's tha dangerous stuff btw.`
 
 ==================================================================================================
 
 (Attributes)
 
 [HP]: 0 - 100
+
 [ST]: 0 - 100
+
 [SP]: 0 - 1000 (more?)
 
 [Restore options:] HP +1 per sec, ST +1 per sec, SP +5 per sec
@@ -40,11 +49,16 @@ all around so that`s tha dangerous stuff btw.
 (Stuff)
 
 [XXX-journal]: +50 SP, -50 ST
+
 [XXX-movie]: +100 SP, -100 ST
+
 [XXX-bonus]: +250 SP
 
+
 [Beer (jigulyovskoye)]: +50 ST, -50 SP
+
 [Vodka (petrovich)]: +100 ST, -100 SP
+
 [Power drink]: +100 ST
 
 If Vasya has full ST & SP - then all stuff keeps on his inventory. So just click an 'x' button
