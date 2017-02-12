@@ -1,6 +1,6 @@
 # D.4.C.H.4
 
-### 06.09.2016 - ??.??.2016
+### 06.09.2016 - ??.??.2017
 
 1. main : 2d shooter
 
@@ -116,9 +116,9 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 
 ### Stage 4.
 
-**Level name]: Mountains.
+**Level name: Mountains.
 
-**Enemies]: dogs, hachi, 
+**Enemies: dogs, hachi, 
 
 **Boss]: beer strength. Zuliko throws bottles with beers. If they blow up - you'll get damage
 and fall penis, so you can't shooting for some time.
