@@ -2,23 +2,15 @@
 
 ### 06.09.2016 - ??.??.2017
 
-1. main : 2d shooter
+#### Genre: 2D Action
 
-2. place : dacha
+#### Main Hero: Vasiliy Predatchenko
 
-3. stages : five
+#### Weapons: A dick
 
-4. protagonist : Vasya 
+#### Enemies: Dog, Bandits, Hachi ... 
 
-5. weapon : dick with several modes for shooting
-
-6. enemies : dogs, Losev`s squad, hachi, ..., traps.
-
-7. bosses : Artem, Losev, Ilya, Zuliko, Ped0
-
-8. ???
-
-9. GOTY!!!1
+#### Bosses: Artem, Losev, Ilja, Zuliko, P3D0
 
 --------------------------------------------------------------------------------------------------
 
