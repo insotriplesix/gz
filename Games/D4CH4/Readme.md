@@ -6,12 +6,6 @@
 
 #### Main Hero: Vasiliy Predatchenko
 
-#### Weapons: A dick
-
-#### Enemies: Dog, Bandits, Hachi ... 
-
-#### Bosses: Artem, Losev, Ilja, Zuliko, P3D0
-
 --------------------------------------------------------------------------------------------------
 
 ### A little description.
@@ -52,6 +46,9 @@ all around so that's tha dangerous stuff btw.`
 If Vasya has full ST & SP - then all stuff keeps on his inventory. So just click an 'x' button
 to restore SP and don't get a negative effect and click a 'p' button if you wanna power!
 
+**Secrets:** It's a bunch of different things like photos/parts of something etc. If you find all
+of them, then you'll get a bonus in the end of a game.
+
 ### Modes
 
 **Uzi mode:** 1 * AttackSpeed, 1 * Damage, -1 SP
@@ -66,7 +63,11 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 
 ### Stage 1.
 
-**Level name:** Vishnevaya St.
+**Level name:** Dacha – Vishnevaya St.
+
+**Weather:** Clear, afternoon.
+
+**Stuff:** 1 bottle of beer, 1 xxx-journal, 1 secret.
 
 **Enemies:** A dog.
 
@@ -89,35 +90,78 @@ to restore SP and don't get a negative effect and click a 'p' button if you wann
 понял.. что ж, придётся объяснить по-другому." "Эмм.. в смысле? Э-ээ! Ты чего?!" После данных
 реплик начинается кровопролитное сражение, победив в котором, Василий сможет продолжить свой путь.
 
-**Stuff:** 1 bottle of beer, 1 xxx-journal, 1 secret.
-
 ==================================================================================================
 
 ### Stage 2.
 
 **Level name:** Suburbs.
 
-**Enemies:** dogs and Losev's squad. At the end boss Losev.
+**Weather:** Clear, evening.
 
-**Boss:** fights with many guards which swapn sometimes. Stands still and throw some stuff.
+**Stuff:** ???
 
-**Win:** ???
+**Enemies:** Losev's squad.
 
-**Lose:** ???
+**Boss:** Losev. Cock strength. Fights with many guards which swapn sometimes. 
+
+**Win:** Losev runs away without sayn a word, Vasya goes forward.
+
+**Lose:** Everybody spit'n'pee on a loser.
+
+**Description [RU]:** Победив Артёма, Василий устремляется дальше. На даче стемнело и на прогулку
+вышли "Бандиты Лосева". Разобравшись со всеми бандитами, Василий встречает самого Лосева.
+На вопрос "Не видел ли он Рому", Лосев отвечает отрицательно, однако не даёт ему пройти дальше и
+просит пояснить Васю за шмот. Василий отказывается и его окружают друзья Лосева. Если Василий
+действительно хочет спасти Леру и Соню, ему нужно сильно постараться, чтобы пройти дальше...
 
 ==================================================================================================
 
 ### Stage 3.
 
-**Level name:** Apartments.
+**Level name:** City.
 
-**Enemies:** none (traps only).
+**Weather:** Rainy, night.
 
-**Boss:** super big muscles strength. Tryna catch and break. Slow but oneshot. Don't be taken in!
+**Stuff:** ???
+
+**Enemies:** Gopniks, bomzhs, ???
+
+**Boss:** -
 
 **Win:** ???
 
 **Lose:** ???
+
+**Description [RU]:** Добравшись до города, Василий решает посетить ещё одного старого знакомого
+Романа – Илью. Однако сможет ли он дойти до него, ведь вокруг тьма и гопники давно уже поджидают
+его...
+
+==================================================================================================
+
+### Stage 4.
+
+**Level name:** Apartments.
+
+**Weather:** Clear.
+
+**Stuff:** Lotta beers bottles, ???, 1 secret.
+
+**Enemies:** Traps & puzzles.
+
+**Boss:** Ilja. Super big huge muscles tank strength. Tryna catch you and break. Slow but oneshot.
+
+**Win:** ???
+
+**Lose:** ???
+
+**Description [RU]:** Вася входит в дом, но с самого начала сталкивается с трудностями, т.к. все
+двери закрыты, а на вопрос "Есть кто дома?" он не получает ответ. Ему придётся научиться думать,
+если он всё ещё хочет спасти девочек. А может ну его нахрен?!
+
+Когда Вася решает все головоломки, появляется сам Илья. Илья пытается выгнать Васю из дома, но 
+тот отказывается и говорит, что покинет дом, когда Илья скажет где находится Роман. Илья допивает
+бутылку пива и начинается ожесточённая схватка. Сумеет ли Василий одержать победу над этим качком?
+Ведь любой удар Ильи может стоить ему жизни!
 
 ==================================================================================================
 
