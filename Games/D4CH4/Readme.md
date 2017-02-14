@@ -61,6 +61,8 @@ of them, then you'll get a bonus in the end of a game.
 
 --------------------------------------------------------------------------------------------------
 
+## PART I
+
 ### Stage 1.
 
 **Level name:** Dacha – Vishnevaya St.
@@ -165,36 +167,114 @@ of them, then you'll get a bonus in the end of a game.
 
 ==================================================================================================
 
-### Stage 4.
+### Last Scene for the 1st part.
 
-**Level name:** Mountains.
+**Level name:** Dacha – Bazaar.
 
-**Enemies:** dogs, hachi, 
+**Weather:** Clear, morning.
 
-**Boss:** beer strength. Zuliko throws bottles with beers. If they blow up - you'll get damage
-and fall penis, so you can't shooting for some time.
+**Stuff:** Lotta beers & vodka bottles.
 
-**Win:** Vasya drinks alotta beer.
+**Enemies:** -
 
-**Lose:** Vasya suck a Zuliko's dick.
+**Boss:** -
+
+**Win:** -
+
+**Lose:** -
 
 ==================================================================================================
 
-### Stage 5.
+## PART II
 
-**Level name:** Military base.
+### Stage 1.
 
-**Enemies:** dogs, Losev's squad, hachi, ... Artem, Ilya and hidden traps.
+**Level name:** Mountains.
 
-**Boss:** pedo strength. Pedo fights after Vasya slayed Artem and Ilya again. Then Pedo use pistol.
-So Vasya have to forehead spermshot only. After that Pedo goes melee. If Vasya keeps winning -
-Pedo murder himself by a grenade. If Vasya close enough - he'll be dead. So that's it. If Vasya
-saved distance - stage complete and Vasya can free girls and go fuck 'em. Good lick!
+**Weather:** Sandstorm, afternoon.
 
-**Secret:** if Vasya stands near prisoners - they're start masturbate his cock so that's how he can
+**Stuff:** ???
+
+**Enemies:** Hachi, ???
+
+**Boss:** Zuliko. Beer strength. Zuliko throws bottles with beers. If they blow up - you'll get damage
+and fall penis, so you can't shooting for some time.
+
+**Win:** Zuliko dies. Vasya drinks alotta beer & then he finds a strange note thereby gets some
+secret info about Pedobase.
+
+**Lose:** Vasya suck a Zuliko's dick.
+
+**Description [RU]:** ???
+
+==================================================================================================
+
+### Stage 2.
+
+**Level name:** Volcano.
+
+**Weather:** Murk, night.
+
+**Stuff:** ???
+
+**Enemies:** ???
+
+**Boss:** ???
+
+**Win:** ???
+
+**Lose:** ???
+
+**Description [RU]:** ???
+
+==================================================================================================
+
+### Stage 3.
+
+**Level name:** p3d0b4s3.
+
+**Weather:** Dark.
+
+**Stuff:** ???, 1 secret.
+
+**Enemies:** Samurais, traps, puzzles, ...
+
+**Boss:** CyberArtem. Tech strength. He can shoot from his arm, he can do a dash, he can... alot.
+
+**Win:** 
+
+**Lose:** CyberArtem tear Vasya to pieces & that's it.
+
+**Description [RU]:** ???
+
+==================================================================================================
+
+### Stage 4.
+
+**Level name:** not available.
+
+**Weather:** not available.
+
+**Stuff:** not available.
+
+**Enemies:** not available.
+
+**Boss:** p3d0.
+
+**Hint:** If Vasya stands near prisoners - they're start masturbate his cock so that's how he can
 increase his Sperm Points! 
 
-**Final scene:** Lera and Sonya thank Vasya for save their lives and accept an offer to sex w/ him.
-Moaning. Happy end.
+**Win:** not available.
+
+**Lose:** not available.
+
+**Description [RU]:** not available.
+
+==================================================================================================
+
+### Last Scene for the 2nd part.
+
+**Final scene:** Lera and Sonya ready 4 sex but Vasya's dick ain't. Girls laughin, Vasya ragin.
+The end.
 
 --------------------------------------------------------------------------------------------------
