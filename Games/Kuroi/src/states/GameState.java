@@ -5,15 +5,15 @@ import java.awt.Graphics2D;
 /** Abstract class for 'state' object. **/
 public abstract class GameState {
 	
-	// An object that operate the current state of the game
+	/* An object that operate the current state of the game */
 	protected GameStateManager gsm;
 	
-	// Constructor
+	/* Constructor */
 	public GameState(GameStateManager gsm) {
 		this.gsm = gsm;
 	}
 	
-	// Methods
+	/* Methods */
 	public abstract void init();
 	public abstract void update();
 	public abstract void render(Graphics2D g);
