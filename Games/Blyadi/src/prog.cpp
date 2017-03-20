@@ -92,7 +92,7 @@ int main()
 
 	printCross(7, 5, 9, 3, 11, 5, 9, 7);
 
-	int attempts = 20, score = 0;
+	int attempts = 5, score = 0;
 
 	while (1) {
 		SetConsoleTextAttribute(hConsole, _W);
