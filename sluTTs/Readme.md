@@ -1,7 +1,7 @@
 # sluTTs
 
 <p>
-  <img src="https://github.com/5aboteur/Third-Reich-Secrets/blob/master/sluTTs/slutts_v1.0.png" width="150"/>
+  <img src="https://github.com/5aboteur/Third-Reich-Secrets/blob/master/sluTTs/slutts_v1.0.png" width="200"/>
 </p>
 
 ### --- Descr --------------------------
