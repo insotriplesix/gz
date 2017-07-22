@@ -11,6 +11,7 @@
 #define DELAY	 1.2
 #define DURATION 140
 
+/* Colors */
 #define _G 10
 #define _R 12
 #define _W 15
@@ -27,17 +28,18 @@ int main()
 	HWND console = GetConsoleWindow();
 	RECT r;
 	GetWindowRect(console, &r);
-	MoveWindow(console, r.left + 600, r.top + 300, 400, 400, true);
-	
+	MoveWindow(console, r.left + 600, r.top + 300, 180, 200, true);
+
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	/* Screen buffer size */
+	/* Change the screen buffer size for hide scrollbars */
 	CONSOLE_SCREEN_BUFFER_INFO SBInfo;
-	COORD newSize;
 	GetConsoleScreenBufferInfo(hConsole, &SBInfo);
-	newSize.X = 40;
-	newSize.Y = 0;
-	SetConsoleScreenBufferSize(hConsole, newSize);
+	SBInfo.dwSize.X = SBInfo.dwMaximumWindowSize.X;
+	SBInfo.dwSize.Y = SBInfo.dwMaximumWindowSize.Y;
+	SetConsoleScreenBufferSize(hConsole, SBInfo.dwSize);
+	HWND scrb = GetConsoleWindow();
+	ShowScrollBar(scrb, SB_BOTH, FALSE);
 
 	/* Set cursor invisible */
 	CONSOLE_CURSOR_INFO info;
@@ -57,14 +59,15 @@ int main()
 	SetCurrentConsoleFontEx(hConsole, false, &font);
 
 	/* Play music */
-	PlaySound(TEXT("blyadi.wav"), NULL, SND_ASYNC | SND_LOOP);
+	PlaySound(TEXT("slutts.wav"), NULL, SND_ASYNC | SND_LOOP);
 
 	/* Change text color */
 	SetConsoleTextAttribute(hConsole, _W);
 
 	gotoxy(1, 1);
 	std::cout << "PREPARE UR FINGAZ";
-	
+
+	/* Preparatory stage */
 	auto start = std::chrono::steady_clock::now();
 	while (1) {
 		auto end = std::chrono::steady_clock::now();
@@ -94,20 +97,19 @@ int main()
 
 	int attempts = 5, score = 0;
 
+	/* Main routine */
 	while (1) {
 		SetConsoleTextAttribute(hConsole, _W);
 
 		auto finish = std::chrono::steady_clock::now();
 		auto dif = std::chrono::duration_cast<std::chrono::seconds>(finish - start);
 
+		/* Time is over */
 		if (dif.count() > DURATION) break;
-
-//		gotoxy(14, 1);
-//		std::cout << DURATION - dif.count();
 
 		printCross(7, 5, 9, 3, 11, 5, 9, 7);
 		gotoxy(9, 5);
-		char r = (char)(65 + rand() % 25);
+		char r = (char)(65 + rand() % 25);	// Generate random character
 
 		std::cout << r << std::endl;
 
@@ -115,15 +117,17 @@ int main()
 
 		auto start = std::chrono::steady_clock::now();
 
+		/* Buttons press handling */
 		while (1) {
 			if (_kbhit()) {
 				char c = _getch();
-				if (c == r || c == r + 32) {
+				if (c == r || c == r + 32) {	// r + 32 for CapsLock
 					++score;
 					SetConsoleTextAttribute(hConsole, _G);
 					printCross(7, 5, 9, 3, 11, 5, 9, 7);
 					std::this_thread::sleep_for(std::chrono::milliseconds(75));
-				} else {
+				}
+				else {
 					--attempts;
 					SetConsoleTextAttribute(hConsole, _R);
 					printCross(7, 5, 9, 3, 11, 5, 9, 7);
@@ -135,6 +139,8 @@ int main()
 			auto dif = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 			gotoxy(4, 1);
 			std::cout << "score: " << score;
+
+			/* You`re slow */
 			if (dif.count() / 1000.0 > DELAY) {
 				--attempts;
 				SetConsoleTextAttribute(hConsole, _R);
@@ -144,14 +150,17 @@ int main()
 			}
 		}
 
+		/* Game over */
 		if (attempts <= 0) {
 			gotoxy(5, 10);
 			std::cout << "NEBLYADI!" << std::endl << std::endl << std::endl;
+			std::this_thread::sleep_for(std::chrono::seconds(2));
 			return 0;
 		}
 	}
 
-	gotoxy(6, 10);
+	/* That was ez ain`t it? */
+	gotoxy(6, 8);
 	SetConsoleTextAttribute(hConsole, _G);
 	std::cout << "BLYADI!" << std::endl;
 	SetConsoleTextAttribute(hConsole, _W);
