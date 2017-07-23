@@ -1,5 +1,9 @@
 # Kuroi
 
+<p>
+  <img src="https://github.com/5aboteur/Third-Reich-Secrets/blob/master/Kuroi/Kuroi.gif" width="150"/>
+</p>
+
 ### --- Descr --------------------------
 
 A short game about dark ninja who is going to save his wife.
