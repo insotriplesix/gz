@@ -54,7 +54,6 @@ int main(int argc, char **argv)
 	fin.open(filename, std::ios::in);
 
 	if (fin.is_open()) {
-
 		/* Get all text from it. */
 		while (!fin.eof())
 			buf += fin.get();
@@ -70,7 +69,6 @@ int main(int argc, char **argv)
 		fout.open("leetilized_" + filename, std::ios::out);
 
 		if (fout.is_open()) {
-
 			/* Drop the leetilized text to that file. */
 			fout << lbuf;
 
