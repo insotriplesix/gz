@@ -8,20 +8,20 @@
 const std::map<char, std::string> alphabet =
 {
 	{ 'a', "4" },{ 'b', "8" },{ 'c', "(" },
-  	{ 'd', "[)" },{ 'e', "3" },{ 'f', "|=" },
+	{ 'd', "[)" },{ 'e', "3" },{ 'f', "|=" },
 	{ 'g', "6" },{ 'h', "|-|" },{ 'i', "!" },
-  	{ 'j', "]" },{ 'k', "|<" },{ 'l', "1" },
+	{ 'j', "]" },{ 'k', "|<" },{ 'l', "1" },
 	{ 'm', "|Y|" },{ 'n', "/\\/" },{ 'o', "0" },
-  	{ 'p', "|>" },{ 'q', "0," },{ 'r', "|2" },
+	{ 'p', "|>" },{ 'q', "0," },{ 'r', "|2" },
 	{ 's', "5" },{ 't', "7" },{ 'u', "[_]" },
-  	{ 'v', "\\/" },{ 'w', "\\v/" },{ 'x', "}{" },
+	{ 'v', "\\/" },{ 'w', "\\v/" },{ 'x', "}{" },
 	{ 'y', "`/" },{ 'z', "2" }
 };
 
 /* Takes a string of text and leetilize every symbol from A(a) to Z(z). */
 std::string leetilize(std::string buf)
 {
-	std::string lbuf = "";
+	std::string lbuf;
 	auto nil = alphabet.end();
 
 	/* Use length() - 1 cuz of EOF. */
@@ -36,55 +36,85 @@ std::string leetilize(std::string buf)
 	return lbuf;
 }
 
+/* Prints main menu. */
+void menu()
+{
+	std::cout << '\n';
+	std::cout << "*** Leetilizer v1.0 ***\n";
+	std::cout << " 1. leet\n";
+	std::cout << " 2. deleet\n";
+	std::cout << " 3. quit\n";
+	std::cout << "***********************\n";
+	std::cout << " > ";
+}
+
 int main(int argc, char **argv)
 {
-	std::string filename;
+	while (0x1) {
+		menu();
 
-	std::cout << "*** Leetilizer v1.0 ***" << std::endl;
-	std::cout << "Input name of a file to make it leet: ";
-	std::cin >> filename;
+		std::string filename;
+		std::ifstream fin;
+		std::ofstream fout;
 
-	std::ifstream fin;
-	std::ofstream fout;
+		std::string buf;
+		std::string lbuf;
 
-	std::string buf = "";
-	std::string lbuf = "";
+		char choice;
 
-	/* Open your file. */
-	fin.open(filename, std::ios::in);
+		std::cin >> choice;
 
-	if (fin.is_open()) {
-		/* Get all text from it. */
-		while (!fin.eof())
-			buf += fin.get();
+		switch (choice) {
+		case '1':
+			std::cout << "\nInput filename: ";
+			std::cin >> filename;
 
-		/* Transform the string to lowercase characters. */
-		std::transform(buf.begin(), buf.end(), buf.begin(), ::tolower);
+			/* Open your file. */
+			fin.open(filename, std::ios::in);
 
-		/* Leetilized it. */
-		std::cout << "Leetilizing . . ." << std::endl;
-		lbuf = leetilize(buf);
+			if (fin.is_open()) {
+				/* Get all text from it. */
+				while (!fin.eof())
+					buf += fin.get();
 
-		/* Open the output file. */
-		fout.open("leetilized_" + filename, std::ios::out);
+				/* Transform the string to lowercase characters. */
+				std::transform(buf.begin(), buf.end(), buf.begin(), ::tolower);
 
-		if (fout.is_open()) {
-			/* Drop the leetilized text to that file. */
-			fout << lbuf;
+				/* Leetilized it. */
+				std::cout << "Leetilizing . . .\n";
+				lbuf = leetilize(buf);
 
-			/* ??? PROFIT */
-			std::cout << "Complete." << std::endl;
+				/* Open the output file. */
+				fout.open("leetilized_" + filename, std::ios::out);
+
+				if (fout.is_open()) {
+					/* Drop the leetilized text to that file. */
+					fout << lbuf;
+
+					/* ??? PROFIT */
+					std::cout << "Complete.\n";
+				}
+				else {
+					std::cout << "Error opening file '" << "leetilized_" + filename << "'.\n";
+				}
+			}
+			else {
+				std::cout << "Error opening file '" << filename << "'.\n";
+			}
+
+			fin.close();
+			fout.close();
+
+			break;
+		case '2':
+			std::cout << "\nUnavailable in this version.\n";
+			break;
+		case '3':
+			exit(EXIT_SUCCESS);
+		default:
+			std::cout << "\nUnrecognized value. Try another one.\n";
 		}
-		else {
-			std::cout << "Error opening file '" << "leetilized_" + filename << "'" << std::endl;
-		}	
 	}
-	else {
-		std::cout << "Error opening file '" << filename << "'" << std::endl;
-	}
-
-	fin.close();
-	fout.close();
 
 	return 0;
 }
