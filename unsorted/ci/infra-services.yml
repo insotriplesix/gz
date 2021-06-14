@@ -1,0 +1,318 @@
+include:
+  - project: devops/gitlab-ci-base
+    file: /deploy-helmfile.yml
+
+stages:
+  - create_namespaces
+  - deploy
+
+# Template for create namespace for dev/rc environment
+.create_namespaces_dev:
+  extends: .deploy_helmfile
+  stage: create_namespaces
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_DEV
+    KUBECTL_DRY_RUN: --server-dry-run
+  script:
+    - set -x
+    - kubectl diff -f deploy/project-dev/namespaces.yml
+    - kubectl apply -f deploy/project-dev/namespaces.yml ${KUBECTL_DRY_RUN}
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-dev/*
+      - deploy/project-dev/**/*
+
+# Verify namespace creation for dev environment (only branches)
+k8s:verify_namespaces_dev:
+  extends: .create_namespaces_dev
+  except:
+    - master
+
+# Create namespace for dev environment (only master)
+k8s:create_namespaces_dev:
+  extends: .create_namespaces_dev
+  variables:
+    KUBECTL_DRY_RUN: ''
+  only:
+    refs:
+      - master
+
+# Verify namespace creation for rc environment (only branches)
+k8s:verify_namespaces_rc:
+  extends: .create_namespaces_dev
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_RC
+  except:
+    - master
+
+# Create namespace for rc environment (only master)
+k8s:create_namespaces_rc:
+  extends: .create_namespaces_dev
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_RC
+    KUBECTL_DRY_RUN: ''
+  only:
+    refs:
+      - master
+
+# Template for create namespace for stable environment
+.create_namespaces_stable:
+  extends: .deploy_helmfile
+  stage: create_namespaces
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_STABLE
+    KUBECTL_DRY_RUN: --server-dry-run
+  script:
+    - set -x
+    - kubectl diff -f deploy/project-stable/namespaces.yml
+    - kubectl apply -f deploy/project-stable/namespaces.yml ${KUBECTL_DRY_RUN}
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-stable/*
+      - deploy/project-stable/**/*
+
+# Verify namespace creation for stable environment (only branches)
+k8s:verify_namespaces_stable:
+  extends: .create_namespaces_stable
+  except:
+    - master
+
+# Create namespace for stable environment (only master)
+k8s:create_namespaces_stable:
+  extends: .create_namespaces_stable
+  variables:
+    KUBECTL_DRY_RUN: ''
+  only:
+    refs:
+      - master
+
+# Template for create namespace for cloud environment
+.create_namespaces_cloud:
+  extends: .deploy_helmfile
+  stage: create_namespaces
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_CLOUD
+    KUBECTL_DRY_RUN: --server-dry-run
+  script:
+    - set -x
+    - kubectl diff -f deploy/project-cloud/namespaces.yml
+    - kubectl apply -f deploy/project-cloud/namespaces.yml ${KUBECTL_DRY_RUN}
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-cloud/*
+      - deploy/project-cloud/**/*
+    variables:
+      - $INFRA_CLOUD_DEPLOY != "false"
+  tags:
+    - prod-runner
+
+# Verify namespace creation for cloud environment (only branches)
+k8s:verify_namespaces_cloud:
+  extends: .create_namespaces_cloud
+  except:
+    - master
+
+# Create namespace for cloud environment (only master)
+k8s:create_namespaces_cloud:
+  extends: .create_namespaces_cloud
+  variables:
+    KUBECTL_DRY_RUN: ''
+  only:
+    refs:
+      - master
+
+# Template for deploy release for dev environment
+.deploy_dev:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_DEV
+    HELMFILE_ACTION: diff
+    HELMFILE_YAML: deploy/project-dev/helmfiles/helmfile.yaml
+  environment:
+    name: dev
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-dev/helmfiles/*
+      - deploy/project-dev/values/dev/*
+      - deploy/project-dev/values/*
+      - deploy/shared/**/*
+
+# Verify release deployment for dev environment (only branches)
+k8s:verify_dev:
+  extends: .deploy_dev
+  except:
+    - master
+   needs:
+     - job: k8s:verify_namespaces_dev
+       artifacts: false
+
+# Deploy release for dev environment (only branches)
+k8s:deploy_dev:
+  extends: .deploy_dev
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    refs:
+      - master
+   needs:
+     - job: k8s:create_namespaces_dev
+       artifacts: false
+
+# Force deploy release for dev environment (only branches)
+k8s:force_deploy_dev:
+  extends: .deploy_dev
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    changes:
+    refs:
+      - master
+  when: manual
+
+# Template for deploy release for rc environment
+.deploy_rc:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_DEV
+    HELMFILE_ACTION: diff
+    HELMFILE_YAML: deploy/project-dev/helmfiles/helmfile.yaml
+  environment:
+    name: rc
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-dev/helmfiles/*
+      - deploy/project-dev/values/rc/*
+      - deploy/project-dev/values/*
+      - deploy/shared/**/*
+
+# Verify release deployment for rc environment (only branches)
+k8s:verify_rc:
+  extends: .deploy_rc
+  except:
+    - master
+   needs:
+     - job: k8s:verify_namespaces_rc
+       artifacts: false
+
+# Deploy release for rc environment (only branches)
+k8s:deploy_rc:
+  extends: .deploy_rc
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    refs:
+      - master
+   needs:
+     - job: k8s:create_namespaces_rc
+       artifacts: false
+
+# Force deploy release for rc environment (only branches)
+k8s:force_deploy_rc:
+  extends: .deploy_rc
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    changes:
+    refs:
+      - master
+  when: manual
+
+# Template for deploy release for stable environment
+.deploy_stable:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_STABLE
+    HELMFILE_ACTION: diff
+    HELMFILE_YAML: deploy/project-stable/helmfiles/helmfile.yaml
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-stable/**/*
+      - deploy/shared/**/*
+
+# Verify release deployment for stable environment (only branches)
+k8s:verify_stable:
+  extends: .deploy_stable
+  except:
+    - master
+   needs:
+     - job: k8s:verify_namespaces_stable
+       artifacts: false
+
+# Deploy release for stable environment (only branches)
+k8s:deploy_stable:
+  extends: .deploy_stable
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    refs:
+      - master
+   needs:
+     - job: k8s:create_namespaces_stable
+       artifacts: false
+
+# Force deploy release for stable environment (only branches)
+k8s:force_deploy_stable:
+  extends: .deploy_stable
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    changes:
+    refs:
+      - master
+  when: manual
+
+# Template for deploy release for cloud environment
+.deploy_cloud:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_CLOUD
+    HELMFILE_ACTION: diff
+    HELMFILE_YAML: deploy/project-cloud/helmfiles/helmfile.yaml
+    K8S_HELM_SECRETS_KEY: $K8S_HELM_SECRETS_KEY_PROJECT_CLOUD
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - deploy/project-cloud/**/*
+      - deploy/shared/**/*
+    variables:
+      - $INFRA_CLOUD_DEPLOY != "false"
+  tags:
+    - prod-runner
+
+# Verify release deployment for cloud environment (only branches)
+k8s:verify_cloud:
+  extends: .deploy_cloud
+  except:
+    - master
+   needs:
+     - job: k8s:verify_namespaces_cloud
+       artifacts: false
+
+# Deploy release for cloud environment (only branches)
+k8s:deploy_cloud:
+  extends: .deploy_cloud
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    refs:
+      - master
+   needs:
+     - job: k8s:create_namespaces_cloud
+       artifacts: false
+
+# Force deploy release for cloud environment (only branches)
+k8s:force_deploy_cloud:
+  extends: .deploy_cloud
+  variables:
+    HELMFILE_ACTION: apply
+  only:
+    changes:
+    refs:
+      - master
+  when: manual
