@@ -1,0 +1,348 @@
+include:
+  - project: devops/gitlab-ci-base
+    file: /services-docker.yml
+  - project: devops/gitlab-ci-base
+    file: /publish-docker.yml
+  - project: devops/gitlab-ci-base
+    file: /push-helm-charts.yml
+  - project: devops/gitlab-ci-base
+    file: /shared-helmfile.yml
+  - project: devops/gitlab-ci-base
+    file: /deploy-helmfile.yml
+  - project: devops/gitlab-ci-base
+    file: /sign-image.yml
+  - project: devops/gitlab-ci-base
+    file: /codequality.yml
+  - build-docker.yml
+
+stages:
+  - code-quality
+  - prepare
+  - build
+  - publish
+  - auto_sign
+  - deploy
+  - integration_tests
+
+# Проверка качества кода через sonarqube
+code-quality:
+  extends: .codequality
+  stage: code-quality
+  when: manual
+  allow_failure: true
+
+# Сборка артефакта по ветке (допустимые названия веток: bugfix, hotfix, feature + № issue) без push в registry
+build_branches:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_REF_SLUG}
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - /^bugfix\/.+$/
+      - /^hotfix\/.+$/
+      - /^feature\/.+$/
+    changes:
+      - src/**/*
+      - pom.xml
+      - Dockerfile
+  except:
+    - tags
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта для стенда разработки (DEV) с master ветки
+build_dev:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_REF_SLUG}
+      $CI_REGISTRY/$CI_PROJECT_PATH:latest
+      $CI_REGISTRY/$CI_PROJECT_PATH:dev
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - master
+    changes:
+      - src/**/*
+      - pom.xml
+      - Dockerfile
+  except:
+    - tags
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта для проверок безопасности
+build_sc:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_TAG}
+      $CI_REGISTRY/$CI_PROJECT_PATH:latest
+      $CI_REGISTRY/$CI_PROJECT_PATH:dev
+    ARTIFACT_VERSION: ${CI_COMMIT_TAG}
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-SC\d+$/
+      - /^\d+\.\d+\.\d+-bugfix-PROJECT-566-\d+$/
+
+# Публикация образа (security checks)
+publish_image_sc:
+  extends: .publish-docker
+  stage: publish
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-SC\d+$/
+      - /^\d+\.\d+\.\d+-bugfix-PROJECT-566-\d+$/
+  except:
+    - master
+  retry: 2
+
+# Сборка артефакта для стенда пре-продакшн (RC) с pre-production ветки
+build_rc:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_TAG}
+      $CI_REGISTRY/$CI_PROJECT_PATH:latest
+      $CI_REGISTRY/$CI_PROJECT_PATH:rc
+    ARTIFACT_VERSION: ${CI_COMMIT_TAG}
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-RC\d+$/
+  except:
+    - branches
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка release артефакта, разворачивается на продакшн стенде (PROD) с production ветки
+build_release:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_AUTHS: >
+      /$CI_REGISTRY/$REGISTRY_PUSHER_LOGIN/$REGISTRY_PUSHER_PASSWORD/
+      /$CI_REGISTRY_EXT/$REGISTRY_PUSHER_LOGIN/$REGISTRY_PUSHER_PASSWORD/
+      /$CI_CACHE_REGISTRY/$REGISTRY_PUSHER_LOGIN/$REGISTRY_PUSHER_PASSWORD/
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_TAG}
+      $CI_REGISTRY/$CI_PROJECT_PATH:stable
+      $CI_REGISTRY/$CI_PROJECT_PATH:latest
+      $CI_REGISTRY_EXT/$CI_PROJECT_PATH:latest
+      $CI_REGISTRY_EXT/$CI_PROJECT_PATH:${CI_COMMIT_TAG}
+    ARTIFACT_VERSION: ${CI_COMMIT_TAG}
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+$/
+  except:
+    - branches
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта при слиянии (merge-request) без push в registry
+build_mr:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_DESTINATION: >
+      $CI_REGISTRY/$CI_PROJECT_PATH:${CI_COMMIT_REF_SLUG}
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - merge_requests
+  except:
+    - tags
+    - master
+    - branches
+  coverage: /Total.*?([0-9]{1,3})%/
+
+check_released_rc:
+  stage: build
+  image: curlimages/curl:7.69.1
+  only:
+    refs:
+      - merge_requests
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
+      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "pre-production"
+  script:
+    - url=https://cft-gitlab-api.project-dev.cloud.ftc.ru/api/v1/projects/${CI_PROJECT_ID}/tags/release_found
+    - http_response_code=$(curl -o /dev/stderr -w "%{http_code}" $url)
+    - if [ $http_response_code != "200" ]; then
+    -   exit 1
+    - else
+    -   exit 0
+    - fi
+  allow_failure: true
+
+# Публикация образа (релиз-кандидатов)
+publish_image:
+  extends: .publish-docker
+  stage: publish
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-RC\d+$/
+      - /^bugfix\/.+$/
+      - /^hotfix\/.+$/
+      - /^feature\/.+$/
+  except:
+    - master
+  when: manual
+  retry: 2
+
+# Генерация helm-file (только при изменении содержимого helm)
+# При развертывании будет использоваться локальный chart
+deploy_prepare:
+  stage: prepare
+  variables:
+    CHART_LOCATION: .
+    IS_LOCAL_CHART: 'true'
+  extends: .shared_helmfile
+  only:
+    refs:
+      - tags
+      - master
+
+# Публикация helm-chart (только на release тагах и только при наличии изменений в chart)
+publish_helm:
+  extends: .publish_helm
+  stage: publish
+  only:
+    changes:
+      - helm/**/*
+    refs:
+      - /^\d+\.\d+\.\d+$/
+  retry: 2
+
+# Публикация helm-chart (в ручном режиме для релиз-кандидатов)
+publish_helm_manual:
+  extends: .publish_helm
+  stage: publish
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-RC\d+$/
+  when: manual
+  retry: 2
+
+# Deploy на стенд разработки
+deploy_dev:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_DEV
+    HELMFILE_NAMESPACE: project-dev
+    HELMFILE_YAML: helm/helmfile.yaml
+  environment:
+    name: dev
+  dependencies:
+    - deploy_prepare
+  only:
+    refs:
+      - master
+  when: manual
+  retry: 2
+
+# Deploy на стенд разработки
+deploy_dev_sc:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_DEV
+    HELMFILE_NAMESPACE: project-dev
+    HELMFILE_YAML: helm/helmfile.yaml
+  environment:
+    name: dev
+  dependencies:
+    - deploy_prepare
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-SC\d+$/
+  retry: 2
+
+# Deploy на пре-продакшн стенд
+deploy_rc:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_RC
+    HELMFILE_NAMESPACE: project-rc
+    HELMFILE_YAML: helm/helmfile.yaml
+  environment:
+    name: rc
+    url: https://front.project-rc.cloud.ftc.ru/
+  dependencies:
+    - deploy_prepare
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-RC\d+$/
+  retry: 2
+
+# Deploy на stable-стенд
+deploy_stable:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_STABLE
+    HELMFILE_NAMESPACE: project-stable
+    HELMFILE_YAML: helm/helmfile.yaml
+  environment:
+    name: stable
+    url: https://front.project-stable.cloud.ftc.ru/
+  dependencies:
+    - deploy_prepare
+  tags:
+    - prod-runner
+  when: manual
+  only:
+    refs:
+      - tags
+      - master
+      - /^\d+\.\d+\.\d+-STABLE\d+$/
+  retry: 2
+
+# Deploy на продакшн стенд
+deploy_prod:
+  extends: .deploy_helmfile
+  variables:
+    K8S_CONFIG: $KUBE_CONFIG_PROJECT_PROD
+    HELMFILE_NAMESPACE: project-prod
+    HELMFILE_YAML: helm/helmfile.yaml
+  environment:
+    name: prod
+  dependencies:
+    - deploy_prepare
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+$/
+  when: manual
+  retry: 2
+
+sc_auto_sign_image:
+  extends: .publish-signed-image-maven
+  stage: auto_sign
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-SC\d+$/
+      - /^\d+\.\d+\.\d+-bugfix-PROJECT-566-\d+$/
+  retry: 2
+
+integration_tests:
+  image:
+    name: ${CI_REGISTRY}/project/tests/api-tests/${CI_PROJECT_NAME}-tests:master
+  stage: integration_tests
+  when: manual
+  variables:
+    GIT_CHECKOUT: "false"
+  except:
+    - master
+  script:
+    - cd /app
+    - mvn ${MAVEN_CLI_OPTS} verify
+   artifacts:
+     paths:
+       - "*.tgz"
+   only:
+     refs:
+       - master

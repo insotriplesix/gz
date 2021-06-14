@@ -1,0 +1,101 @@
+include:
+  - project: devops/gitlab-ci-base
+    file: /codequality.yml
+  - build-docker.yml
+
+stages:
+  - code-quality
+  - build
+
+# Проверка качества кода через sonarqube
+code-quality:
+  extends: .codequality
+  stage: code-quality
+  when: manual
+  allow_failure: true
+
+# Сборка артефакта по ветке (допустимые названия веток: bugfix, hotfix, feature + № issue)
+build_branch:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - /^bugfix\/.+$/
+      - /^hotfix\/.+$/
+      - /^feature\/.+$/
+    changes:
+      - src/**/*
+      - pom.xml
+      - Dockerfile
+  except:
+    - tags
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта для стенда разработки (DEV) с master ветки
+build_dev:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - master
+    changes:
+      - src/**/*
+      - pom.xml
+      - Dockerfile
+  except:
+    - tags
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта для стенда пре-продакшн (RC) с pre-production ветки
+build_rc:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_TAG}
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+-RC\d+$/
+  except:
+    - branches
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка release артефакта, разворачивается на продакшн стенде (PROD) с production ветки
+build_release:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_TAG}
+  only:
+    refs:
+      - /^\d+\.\d+\.\d+$/
+  except:
+    - branches
+    - master
+  coverage: /Total.*?([0-9]{1,3})%/
+
+# Сборка артефакта при слиянии (merge-request)
+build_mr:
+  extends: .build_docker_image_maven
+  stage: build
+  variables:
+    KANIKO_EXTRA: --no-push
+    ARTIFACT_VERSION: ${CI_COMMIT_REF_SLUG}-SNAPSHOT
+  only:
+    refs:
+      - merge_requests
+  except:
+    - tags
+    - master
+    - branches
+  coverage: /Total.*?([0-9]{1,3})%/
+
